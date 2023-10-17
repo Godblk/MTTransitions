@@ -91,6 +91,11 @@ public class MTTransition: NSObject, MTIUnaryFilter {
         self.completion = completion
         self.startTime = nil
         let driver = CADisplayLink(target: self, selector: #selector(render(sender:)))
+        if #available(iOS 15.0, *) {
+            driver.preferredFrameRateRange = .init(minimum: 60, maximum: 120, __preferred: 100)
+        } else {
+            driver.preferredFramesPerSecond = 100
+        }
         driver.add(to: .main, forMode: .common)
         self.driver = driver
     }
